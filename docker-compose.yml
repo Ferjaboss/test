@@ -21,7 +21,7 @@ services:
   #backend service
   backend-server:
     container_name: backend
-    image: fatma24/backend:1.0 
+    image: backend
     ports:
       - "8081:8080" 
     restart: always
@@ -36,12 +36,12 @@ services:
    # Frontend Service 
   front-app:
     container_name: frontend
-    image: fatma24/frontend:1.0
+    image: frontend
     build:
       context: ./spring-blog-client
       dockerfile: Dockerfile
     ports:
-      - "4201:80" # Map the exposed port 80 on the container to port 9090 on the host machine
+      - "80:80" 
     restart: always
     depends_on:
       - backend-server

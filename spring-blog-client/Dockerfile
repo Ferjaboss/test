@@ -1,3 +1,4 @@
+# Stage 1: Build the Angular application
 FROM node:18.13 AS builder
 
 WORKDIR /app
@@ -11,12 +12,11 @@ COPY . /app/
 
 RUN npm run build
 
-FROM node:18.13-alpine
 
-WORKDIR /app
+FROM nginx:1.21.1-alpine
 
-COPY --from=builder /app/dist /app/dist
+COPY --from=builder /app/dist/spring-blog-client /usr/share/nginx/html
 
-EXPOSE 4200
+EXPOSE 80
 
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]
