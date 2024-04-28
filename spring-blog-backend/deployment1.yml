@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment 
 metadata:
-  name: spring-app # Le nom du déploiement
-spec: #spécifications du déploiement
+  name: spring-app # Deployment name
+spec:
   replicas: 1
-  selector: #les labels utilisés pour sélectionner le pod
-    matchLabels: #les labels utilisés pour faire correspondre les pods
+  selector:
+    matchLabels:
       app: spring-app
-  template: #modéle de pod utilisé 
+  template:
     metadata:
       labels:
         app: spring-app
-    spec: #specifications des pods
+    spec:
       containers:
-        - name: backend
-          image: fatma24/backend:latest
-          imagePullPolicy: "Always"
-          env:
-            - name: SPRING_DATASOURCE_URL
-              value: jdbc:mysql://192.168.74.134:31000/springblog?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
-            - name: SPRING_DATASOURCE_USERNAME
-              value: root
-            - name: SPRING_DATASOURCE_PASSWORD
-              value: ubuntu 
-          ports:
-            - containerPort: 8080
+      - name: backend
+        image: fatma24/backend:latest
+        imagePullPolicy: "Always"
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: jdbc:mysql://192.168.74.140:31000/springblog?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+        - name: SPRING_DATASOURCE_USERNAME
+          value: root
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: ubuntu 
+        ports:
+        - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
@@ -35,7 +35,8 @@ spec:
   selector:
     app: spring-app
   ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 8080
-      nodePort: 31001
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    nodePort: 31001
+
