@@ -10,27 +10,45 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Fatmaayadi/fullstack-spring-boot-and-angular-blog/tree/main/spring-blog-backend'
+                git branch: 'main', url: 'https://github.com/Fatmaayadi/fullstack-spring-boot-and-angular-blog.git'
+                script {
+                    // Change directory to spring-blog-backend
+                    dir('spring-blog-backend') {
+                        sh 'ls -la' // just to verify the correct directory
+                    }
+                }
             }
         }
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                script {
+                    dir('spring-blog-backend') {
+                        sh 'mvn clean package'
+                    }
+                }
             }
         }
 
         stage('SonarQube Scan') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'mvn sonar:sonar'
+                script {
+                    dir('spring-blog-backend') {
+                        withSonarQubeEnv('SonarQube') {
+                            sh 'mvn sonar:sonar'
+                        }
+                    }
                 }
             }
         }
 
         stage('Publish Artifact to Nexus') {
             steps {
-                nexusArtifactUploader nexusUrl: "${NEXUS_SERVER_URL}", artifacts: [[artifactId: 'spring-blog-backend', classifier: '', file: 'target/spring-blog-backend-0.0.1-SNAPSHOT.jar', type: 'jar']]
+                script {
+                    dir('spring-blog-backend') {
+                        nexusArtifactUploader nexusUrl: "${NEXUS_SERVER_URL}", artifacts: [[artifactId: 'spring-blog-backend', classifier: '', file: 'target/spring-blog-backend-0.0.1-SNAPSHOT.jar', type: 'jar']]
+                    }
+                }
             }
         }
     }
