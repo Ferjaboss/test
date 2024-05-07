@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    environment {
+        SONAR_SERVER_URL = 'http://192.168.74.139:9010/'
+        NEXUS_SERVER_URL = 'http://192.168.74.134:8081/'
+        MAVEN_HOME = tool 'Maven'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/Fatmaayadi/fullstack-spring-boot-and-angular-blog/tree/main/spring-blog-backend'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('SonarQube Scan') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+
+        stage('Publish Artifact to Nexus') {
+            steps {
+                nexusArtifactUploader  nexusUrl: "${http://192.168.74.134:8081/}", artifacts: [[artifactId: 'spring-blog-backend', classifier: '', file: 'target/spring-blog-backend-0.0.1-SNAPSHOT', type: 'jar']]
+            }
+        }
+    }
+}
