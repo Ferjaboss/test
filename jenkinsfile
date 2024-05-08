@@ -4,7 +4,7 @@ pipeline {
     // Define tools used in the pipeline
     tools {
         // Define Maven tool with version 3.6.3
-        maven 'Maven 3.6.3'
+        maven 'Maven'
     }
     
     stages {
