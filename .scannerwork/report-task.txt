@@ -1,0 +1,6 @@
+projectKey=test
+serverUrl=http://192.168.74.139:9010
+serverVersion=10.5.0.89998
+dashboardUrl=http://192.168.74.139:9010/dashboard?id=test
+ceTaskId=f7e6e890-8337-4bbe-81c2-ddd18fcafed7
+ceTaskUrl=http://192.168.74.139:9010/api/ce/task?id=f7e6e890-8337-4bbe-81c2-ddd18fcafed7

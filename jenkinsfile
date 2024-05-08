@@ -1,0 +1,74 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/Fatmaayadi/fullstack-spring-boot-and-angular-blog.git'
+            }
+        }
+        
+        stage('Build Backend') {
+            steps {
+                dir('spring-blog-backend') {
+                    sh 'mvn clean install'
+                }
+            }
+        }
+        
+        stage('Run Backend Unit Tests') {
+            steps {
+                dir('spring-blog-backend') {
+                    sh 'mvn test'
+                }
+            }
+        }
+        
+        stage('Build Frontend') {
+            steps {
+                dir('spring-blog-client') {
+                    sh 'npm install'
+                    sh 'npm run build -- --prod'
+                }
+            }
+        }
+        
+        stage('Run Frontend Unit Tests') {
+            steps {
+                dir('spring-blog-client') {
+                    sh 'ng test'
+                }
+            }
+        }
+        
+        stage('Code Analysis') {
+            steps {
+                dir('spring-blog-backend') {
+                    withSonarQubeEnv('SonarQube Server') {
+                        sh 'mvn sonar:sonar -Dsonar.host.url=http://192.168.74.139:9010/'
+                    }
+                }
+                dir('spring-blog-client') {
+                    // Make sure SonarScanner is installed and configured properly for Angular
+                    withSonarQubeEnv('SonarQube Server') {
+                        sh 'sonar-scanner -Dsonar.host.url=http://192.168.74.139:9010/'
+                    }
+                }
+            }
+        }
+        
+        stage('Deploy Artifacts to Nexus') {
+            steps {
+                dir('spring-blog-backend/target') {
+                    //  Publish backend artifact to Nexus
+                    sh 'curl -v -u admin:nexus --upload-file spring-blog-backend-0.0.1-SNAPSHOT.jar http://192.168.74.134:8081/repository/maven-releases/'
+                }
+                
+                dir('spring-blog-client') {
+                    // Publish frontend artifact to Nexus (assuming Angular produces static files)
+                    sh 'curl -v -u admin:nexus --upload-file * http://192.168.74.134:8081/repository/npm-releases/'
+                }
+            }
+        }
+    }
+}
