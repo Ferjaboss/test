@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Fatmaayadi/fullstack-spring-boot-and-angular-blog.git'
+                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Fatmaayadi/fullstack-spring-boot-and-angular-blog.git']]])
             }
         }
         
