@@ -9,12 +9,7 @@ pipeline {
     }
     
     stages {
-        stage('Checkout') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Fatmaayadi/fullstack-spring-boot-and-angular-blog.git']]])
-            }
-        }
-        
+               
         stage('Build Backend') {
             steps {
                 dir('spring-blog-backend') {
