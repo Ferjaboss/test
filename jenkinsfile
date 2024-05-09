@@ -46,13 +46,13 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 dir('spring-blog-backend') {
-                    withSonarQubeEnv('SonarQube Server') {
+                    withSonarQubeEnv('SonarQubeServer') {
                         sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.23:sonar -Dsonar.host.url=http://192.168.74.139:9010/'
                     }
                 }
                 dir('spring-blog-client') {
-                    withSonarQubeEnv('SonarQube Server') {
-                        def scannerHome = tool 'SonarQube Server'; // must match the name of an actual scanner installation directory on your Jenkins build agent
+                    withSonarQubeEnv('SonarQubeServer') {
+                        def scannerHome = tool 'SonarQubeServer'; // must match the name of an actual scanner installation directory on your Jenkins build agent
                         sh "${scannerHome}/Downloads/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -Dsonar.host.url=http://192.168.74.139:9010/"
                     }
                 }
