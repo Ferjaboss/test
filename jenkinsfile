@@ -6,8 +6,6 @@ pipeline {
         // Define Maven tool with version 3.6.3
         maven 'Maven'
         nodejs 'NodeJS'
-        // Define SonarQube Scanner tool
-        sonarqubeScanner 'SonarQube Server'
     }
     
     stages {
