@@ -47,13 +47,13 @@ pipeline {
             steps {
                 dir('spring-blog-backend') {
                     withSonarQubeEnv('SonarQube Server') {
-                        sh 'mvn sonar:sonar -Dsonar.host.url=http://192.168.74.139:9010/'
+                        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.23:sonar -Dsonar.host.url=http://192.168.74.139:9010/'
                     }
                 }
                 dir('spring-blog-client') {
-                    // Make sure SonarScanner is installed and configured properly for Angular
                     withSonarQubeEnv('SonarQube Server') {
-                        sh 'sonar-scanner -Dsonar.host.url=http://192.168.74.139:9010/'
+                        def scannerHome = tool 'SonarQube Server'; // must match the name of an actual scanner installation directory on your Jenkins build agent
+                        sh "${scannerHome}Downloads/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -Dsonar.host.url=http://192.168.74.139:9010/"
                     }
                 }
             }
