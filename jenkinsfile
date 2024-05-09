@@ -42,7 +42,7 @@ pipeline {
         stage('Run Frontend Unit Tests') {
             steps {
                 dir('spring-blog-client') {
-                    sh 'npm run ng test'
+                    sh 'npm run test'
                 }
             }
         }
