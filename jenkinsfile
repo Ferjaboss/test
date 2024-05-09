@@ -8,6 +8,10 @@ pipeline {
         nodejs 'NodeJS'
     }
     
+    environment {
+        scannerHome = tool 'SonarQubeServer' // Define scannerHome in the environment block
+    }
+    
     stages {
                
         stage('Build Backend') {
@@ -52,8 +56,7 @@ pipeline {
                 }
                 dir('spring-blog-client') {
                     withSonarQubeEnv('SonarQubeServer') {
-                        def scannerHome = tool 'SonarQubeServer'; // must match the name of an actual scanner installation directory on your Jenkins build agent
-                        sh "${scannerHome}/Downloads/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -Dsonar.host.url=http://192.168.74.139:9010/"
+                        sh "${env.scannerHome}/Downloads/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -Dsonar.host.url=http://192.168.74.139:9010/"
                     }
                 }
             }
