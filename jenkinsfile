@@ -6,6 +6,8 @@ pipeline {
         // Define Maven tool with version 3.6.3
         maven 'Maven'
         nodejs 'NodeJS'
+        // Define SonarQube Scanner tool
+        sonarqubeScanner 'SonarQube Server'
     }
     
     stages {
@@ -53,7 +55,7 @@ pipeline {
                 dir('spring-blog-client') {
                     withSonarQubeEnv('SonarQube Server') {
                         def scannerHome = tool 'SonarQube Server'; // must match the name of an actual scanner installation directory on your Jenkins build agent
-                        sh "${scannerHome}Downloads/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -Dsonar.host.url=http://192.168.74.139:9010/"
+                        sh "${scannerHome}/Downloads/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -Dsonar.host.url=http://192.168.74.139:9010/"
                     }
                 }
             }
