@@ -32,7 +32,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['/usr/bin/google-chrome'], // Specify Chrome binary path here
+    browsers: ['ChromeHeadless'], // Specify Chrome binary path here
     singleRun: false,
     restartOnFileChange: true
   });
