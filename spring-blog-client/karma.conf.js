@@ -1,5 +1,4 @@
-// Karma configuration file, see link for more information
-// https://karma-runner.github.io/1.0/config/configuration-file.html
+const path = require('path');
 
 module.exports = function (config) {
   config.set({
@@ -14,18 +13,14 @@ module.exports = function (config) {
     ],
     client: {
       jasmine: {
-        // you can add configuration options for Jasmine here
-        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
-        // for example, you can disable the random execution with `random: false`
-        // or set a specific seed with `seed: 4321`
-      },
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+        clearRandom: false // leave Jasmine Spec Runner output visible in browser
+      }
     },
     jasmineHtmlReporter: {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/spring-blog-client'),
+      dir: path.join(__dirname, './coverage/spring-blog-client'),
       subdir: '.',
       reporters: [
         { type: 'html' },
@@ -37,7 +32,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['/usr/bin/google-chrome'], // Specify Chrome binary path here
     singleRun: false,
     restartOnFileChange: true
   });
