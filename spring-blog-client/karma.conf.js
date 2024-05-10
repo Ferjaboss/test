@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -13,14 +11,18 @@ module.exports = function (config) {
     ],
     client: {
       jasmine: {
-        clearRandom: false // leave Jasmine Spec Runner output visible in browser
-      }
+        // you can add configuration options for Jasmine here
+        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
+        // for example, you can disable the random execution with `random: false`
+        // or set a specific seed with `seed: 4321`
+      },
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     jasmineHtmlReporter: {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: path.join(__dirname, './coverage/spring-blog-client'),
+      dir: require('path').join(__dirname, './coverage/spring-blog-client'),
       subdir: '.',
       reporters: [
         { type: 'html' },
@@ -32,7 +34,8 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['ChromeHeadless'], // Specify Chrome binary path here
+    // Specify the Chrome binary path
+    browsers: ['/usr/bin/google-chrome'],
     singleRun: false,
     restartOnFileChange: true
   });
