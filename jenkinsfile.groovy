@@ -6,26 +6,27 @@ pipeline {
         // Define Maven tool with version 3.6.3
         maven 'Maven'
         nodejs 'NodeJS'
+        jdk 'Java'
     }
     
     environment {
-        scannerHome = tool 'SonarQubeServer' // Define scannerHome in the environment block
+        scannerHome = tool 'Java'
     }
     
     stages {
                
+        stage('Run Backend Unit Tests') {
+            steps {
+                dir('spring-blog-backend') {
+                    sh 'mvn clean test'
+                }
+            }
+        }
+
         stage('Build Backend') {
             steps {
                 dir('spring-blog-backend') {
                     sh 'mvn clean install'
-                }
-            }
-        }
-        
-        stage('Run Backend Unit Tests') {
-            steps {
-                dir('spring-blog-backend') {
-                    sh 'mvn test'
                 }
             }
         }
@@ -56,7 +57,7 @@ pipeline {
                 }
                 dir('spring-blog-client') {
                     withSonarQubeEnv('SonarQubeServer') {
-                        sh "${env.scannerHome}/Downloads/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -Dsonar.host.url=http://192.168.74.139:9010/"
+                        sh "${env.scannerHome}/bin/java -jar ${env.scannerHome}/lib/sonar-scanner-cli-4.4.0.2170-linux/sonar-scanner-cli-4.4.0.2170-linux/sonar-scanner-4.4.0.2170-linux/bin/sonar-scanner -Dsonar.host.url=http://192.168.74.139:9010/"
                     }
                 }
             }
