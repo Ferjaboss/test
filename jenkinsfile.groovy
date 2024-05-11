@@ -1,10 +1,6 @@
 pipeline {
     agent any
     
-    // Define tools used in the pipeline
-    tools {
-    }
-    
     environment {
         scannerHome = tool 'Sonar';
     }
