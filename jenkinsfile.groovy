@@ -14,7 +14,6 @@ pipeline {
     }
     
     stages {
-               
         stage('Run Backend Unit Tests') {
             steps {
                 dir('spring-blog-backend') {
@@ -50,14 +49,15 @@ pipeline {
         
         stage('Code Analysis') {
             steps {
-                dir('spring-blog-backend') {
+                script {
                     withSonarQubeEnv('SonarQubeServer') {
-                        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.23:sonar -Dsonar.host.url=http://192.168.74.139:9010/'
-                    }
-                }
-                dir('spring-blog-client') {
-                    withSonarQubeEnv('SonarQubeServer') {
-                        sh "${env.scannerHome}/bin/java -jar ${env.scannerHome}/lib/sonar-scanner-cli-4.4.0.2170-linux/sonar-scanner-cli-4.4.0.2170-linux/sonar-scanner-4.4.0.2170-linux/bin/sonar-scanner -Dsonar.host.url=http://192.168.74.139:9010/"
+                        sh """
+                            ${scannerHome}/bin/sonar-scanner \
+                            -Dsonar.projectKey=tunartisan \
+                            -Dsonar.java.binaries=. \
+                            -Dsonar.host.url=http://192.168.74.139:9010 \
+                            -Dsonar.login=squ_1ca99673dccd74a3038f8b7c456368bba9b4d85b
+                        """
                     }
                 }
             }
