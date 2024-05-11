@@ -10,12 +10,18 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 script {
-                        sh ' ${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=fatma -Dsonar.java.binaries=. -Dsonar.host.url=http://master:9000 -Dsonar.login=squ_a918939eb419f31cbdd274d2d03830fa34d3ee8c'
-                    }
+                    withCredentials([string(credentialsId: 'sonar', variable: 'SONAR_LOGIN')]) {
+                            sh """
+                                ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.projectKey=fatma \
+                                -Dsonar.java.binaries=. \
+                                -Dsonar.host.url=http://master:9000
+                                -Dsonar.login=${SONAR_LOGIN}
+                            """
+                }
                 }
             }
         }
-        
-
+        } 
     }
 
