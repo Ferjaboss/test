@@ -36,7 +36,7 @@ module.exports = function (config) {
     autoWatch: true,
     // Specify the Chrome binary path
     browsers: ['/usr/bin/google-chrome'],
-    singleRun: false,
+    singleRun: true,
     restartOnFileChange: true
   });
 };
